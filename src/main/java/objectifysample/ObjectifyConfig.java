@@ -37,23 +37,31 @@ public class ObjectifyConfig {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-      // case: gradle bootRun
-//      ObjectifyService.init(new ObjectifyFactory(
-//          DatastoreOptions.newBuilder()
-//              .setHost("http://localhost:8484")
-//              .setProjectId("my-project")
-//              .build()
-//              .getService()
-//      ));
-      // case: gradle appengineRun
-      ObjectifyService.init(new ObjectifyFactory(
-          DatastoreOptions.newBuilder().setHost("http://localhost:8484")
-              .setProjectId("my-project")
-              .build().getService(),
-          new AppEngineMemcacheClientService()
-      ));
-      // case: memcache
-//      ObjectifyService.init(new ObjectifyFactory(new AppEngineMemcacheClientService()));
+      if (System.getenv("SPRING_PROFILES_ACTIVE") == null) {
+        // local without memcache (gradle bootRun)
+        ObjectifyService.init(new ObjectifyFactory(
+            DatastoreOptions.newBuilder()
+                .setHost("http://localhost:8484")
+                .setProjectId("my-project")
+                .build()
+                .getService()
+        ));
+      } else if ("local".equals(System.getenv("SPRING_PROFILES_ACTIVE"))) {
+        // local with memcache (gradle appengineRun)
+        ObjectifyService.init(new ObjectifyFactory(
+            DatastoreOptions.newBuilder().setHost("http://localhost:8484")
+                .setProjectId("my-project")
+                .build().getService(),
+            new AppEngineMemcacheClientService()
+        ));
+      } else {
+        // on appengine
+        ObjectifyService.init(new ObjectifyFactory(
+            DatastoreOptions.getDefaultInstance().getService(),
+            new AppEngineMemcacheClientService()
+        ));
+      }
+
       ObjectifyService.register(Item.class);
     }
 
