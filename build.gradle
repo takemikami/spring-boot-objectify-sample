@@ -30,22 +30,17 @@ targetCompatibility = 1.8
 
 dependencies {
     // SpringBoot
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
     providedRuntime "org.springframework.boot:spring-boot-starter-jetty"
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
     // objectify
     compile group: 'com.googlecode.objectify', name: 'objectify', version: '6.0'
 
     // apppengine
     compile group: 'com.google.appengine', name: 'appengine-api-1.0-sdk', version: '1.9.63'
-    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
-
-    // lombok
-    compileOnly 'org.projectlombok:lombok:1.16.20'
-    apt "org.projectlombok:lombok:1.16.20"
 
     // development
     runtime("org.springframework.boot:spring-boot-devtools")

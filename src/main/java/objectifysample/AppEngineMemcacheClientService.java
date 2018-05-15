@@ -1,18 +1,13 @@
 package objectifysample;
 
 import com.google.appengine.api.memcache.MemcacheService.CasValues;
-//import com.google.appengine.api.memcache.MemcacheService.IdentifiableValue;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.googlecode.objectify.cache.IdentifiableValue;
 import com.googlecode.objectify.cache.MemcacheService;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import lombok.Data;
-import net.spy.memcached.CASValue;
-import org.apache.commons.collections4.MapUtils;
 
 public class AppEngineMemcacheClientService implements MemcacheService {
 
@@ -70,7 +65,6 @@ public class AppEngineMemcacheClientService implements MemcacheService {
     this.appengineMemcache.deleteAll(keys);
   }
 
-  @Data
   public class AppEngineIdentifiableValue implements IdentifiableValue {
     private CasValues casValues;
     public AppEngineIdentifiableValue(CasValues casValues){
